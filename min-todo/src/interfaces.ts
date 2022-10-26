@@ -8,3 +8,12 @@ export interface TaskInfoInterface {
     completed:boolean,
     nanoid:string,
 }
+export interface ListInfoInterface {
+    title: string,
+    description: string,
+    createTime: number,
+    updateTime: number,
+    isTop: boolean,
+    completed:boolean,
+    nanoid:string,
+}

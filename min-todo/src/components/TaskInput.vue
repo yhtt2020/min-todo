@@ -1,5 +1,5 @@
 <template>
-  <a-input size="small" v-model:value="newTask.title" @pressEnter="addNewTask" placeholder="输入待办，回车确认">
+  <a-input class="add-task-input"  size="small" v-model:value="newTask.title" @pressEnter="addNewTask" placeholder="输入待办，回车确认">
     <template #suffix>
       <calendar-outlined @click="this.dateTimePickerVisible=true" :style="{color:this.newTask.deadTime?'#4545fa':'rgba(0, 0, 0, 0.45)'}"/>
     </template>
@@ -75,7 +75,9 @@ export default {
         }
       }
     },
-    ...mapActions(taskStore, ['addTask']),
+    ...mapActions(taskStore, {
+      addTask:'add'
+    }),
 
     setToday() {
       this.newTaskDeadDate = dayjs()
@@ -132,6 +134,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style  lang="scss">
+.add-task-input{
+  input{
+    font-size: 13px;
+  }
+}
 </style>

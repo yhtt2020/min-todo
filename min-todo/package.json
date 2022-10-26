@@ -15,6 +15,7 @@
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "nanoid": "^4.0.0",
+    "perfect-scrollbar": "^1.5.5",
     "pinia": "^2.0.23",
     "vue": "^3.2.37"
   },
