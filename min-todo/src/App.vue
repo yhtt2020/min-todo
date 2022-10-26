@@ -30,6 +30,9 @@ export default {
   },
   async mounted() {
     await databaseStore().init()
+    databaseStore().$subscribe((mutation, state) => {
+      databaseStore().save()
+    })
   },
   methods:{
     ...mapActions(useStore,['setActiveTask']),
@@ -53,7 +56,7 @@ export default {
         <a-layout-sider :width="100" class="sidebar" theme="light">
           <ul class="nav-items">
             <li class="active"><div class="nav-wrapper"> <alert-outlined  style="font-size:16px"/> 今天</div></li>
-            <li><div class="nav-wrapper"><calendar-outlined style="font-size:16px"/> 七天</div></li>
+            <li><div class="nav-wrapper"><calendar-outlined style="font-size:16px"/> 最近7天</div></li>
             <li><div class="nav-wrapper"><user-outlined style="font-size:16px"/> 个人</div></li>
             <li><div class="nav-wrapper"><team-outlined style="font-size:16px"/> 团队</div></li>
           </ul>

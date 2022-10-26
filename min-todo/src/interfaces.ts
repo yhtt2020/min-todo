@@ -5,5 +5,6 @@ export interface TaskInfoInterface {
     createTime: number,
     updateTime: number,
     isTop: boolean,
+    completed:boolean,
     nanoid:string,
 }

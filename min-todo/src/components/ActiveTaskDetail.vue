@@ -2,7 +2,7 @@
   <a-empty style="margin-top: calc( 100vh / 2 - 90px )" v-if="!activeTask" description="点击代办查看详情">
   </a-empty>
   <template v-else>
-    <div><span class="title-action"><menu-unfold-outlined /></span> <a-checkbox></a-checkbox>
+    <div><span class="title-action"><menu-unfold-outlined /></span> <a-checkbox v-model:checked="activeTask.completed"></a-checkbox>
       <span class="extra-actions">
             <span class="action"><to-top-outlined /> 置顶</span>
             &nbsp;
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import {mapState} from "pinia";
+import {mapState, mapWritableState} from "pinia";
 import {useStore} from "../store";
 import {AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,
   MenuUnfoldOutlined,ToTopOutlined,MoreOutlined} from '@ant-design/icons-vue'
@@ -33,7 +33,7 @@ export default {
     MenuUnfoldOutlined,ToTopOutlined,MoreOutlined
   },
   computed:{
-    ...mapState(useStore,['activeTask','currentTasks','tasks'])
+    ...mapWritableState(useStore,['activeTask','currentTasks','tasks'])
   },
 }
 </script>
