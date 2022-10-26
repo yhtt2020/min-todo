@@ -7,36 +7,45 @@ import {AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,
 import {mapActions, mapState} from "pinia";
 import {useStore,databaseStore,} from './store'
 import {TaskInfoInterface as TaskInfo} from "./interfaces";
-
+import dayjs from 'dayjs'
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import TaskList from "./components/TaskList.vue";
+import TaskInput from "./components/TaskInput.vue";
 export default {
   computed:{
     ...mapState(useStore,['currentTasks','tasks'])
   },
   components:{
+    TaskInput,
+    TaskList,
     AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,
       MenuUnfoldOutlined,ToTopOutlined,MoreOutlined
   },
   data(){
     return {
-      newTask:<TaskInfo> {}
+      zhCN,
     }
   },
   async mounted() {
     await databaseStore().init()
   },
   methods:{
-    ...mapActions(useStore,['addTask']),
-    addNewTask(){
-      let task=this.newTask
-      this.addTask(task)
-      task.title=''
-    }
+
+    getPopupContainer(el, dialogContext) {
+      if (dialogContext) {
+        return dialogContext.getDialogWrap();
+      } else {
+        return document.body;
+      }
+    },
+
   }
 }
 
 </script>
 
 <template>
+  <a-config-provider  :locale="zhCN" :getPopupContainer="getPopupContainer">
     <a-layout theme="light" style="height: 100vh">
 <!--      <a-layout-header theme="light">header</a-layout-header>-->
         <a-layout-sider :width="100" class="sidebar" theme="light">
@@ -51,40 +60,69 @@ export default {
 
         </a-layout-sider>
 
-        <a-layout-content  style="background: white;padding-left: 10px;padding-top: 10px;padding-right: 10px">
+        <div   style="width:190px !important;background: white;padding-left: 10px;padding-top: 10px;padding-right: 10px">
           <div class="middle-title" >
             全部待办
             <span style="float:right">{{tasks.length}}</span>
           </div>
           <div style="margin-top: 5px;margin-bottom: 5px">
-            <a-input size="small" v-model:value="newTask.title" @pressEnter="addTask" placeholder="输入待办，回车确认"></a-input>
+           <TaskInput></TaskInput>
           </div>
-          <ul class="task-list">
-            <li v-for="task in tasks">
-              <a-checkbox>{{task.title}} </a-checkbox> 任务标题任务标题
-            </li>
-          </ul>
+          <TaskList :data="tasks">
+          </TaskList>
+        </div>
 
-        </a-layout-content>
-        <a-layout-sider :width="250" theme="light" style="padding-top: 10px;padding-left: 10px;padding-right: 10px;border-left: 1px solid #e1e1e1">
+        <div   theme="light" style="min-width: auto !important;flex: auto !important;max-width: 800px !important;width: auto !important; padding-top: 10px;padding-left: 10px;padding-right: 10px;border-left: 1px solid #e1e1e1">
           <div><span class="title-action"><menu-unfold-outlined /></span> <a-checkbox></a-checkbox> 任务
-
           <span class="extra-actions">
             <span class="action"><to-top-outlined /> 置顶</span>
             &nbsp;
             <span class="action"><more-outlined /></span>
           </span>
           </div>
-        </a-layout-sider>
+          <a-divider style="margin-top: 10px;margin-bottom: 10px"></a-divider>
+          <div>
+            <a-input size="small" :bordered="false" value="标题标题"></a-input>
+            <div>
+              <a-textarea placeholder="描述" :bordered="false" :autosize="false">
+              </a-textarea>
+            </div>
+          </div>
+        </div>
+      <div>
+
+      </div>
 <!--      <a-layout-footer>footer</a-layout-footer>-->
     </a-layout>
+
+  </a-config-provider>
 </template>
 <style>
 body{
   user-select: none;
 }
+
+</style>
+<style lang="scss">
+.full-modal{
+  .ant-modal {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
+  }
+  .ant-modal-body {
+    flex: 1;
+  }
+}
 </style>
 <style scoped lang="scss">
+
 .small-title{
   font-size: 12px;
   padding-left: 10px;
@@ -122,15 +160,10 @@ body{
 
 
 
-.task-list{
-  list-style: none;
-  padding-left: 0;
-  li{
-    line-height: 28px;
-  }
-}
+
 .extra-actions{
   float:right;
 
 }
+
 </style>

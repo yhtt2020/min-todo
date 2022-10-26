@@ -1,5 +1,7 @@
 import {defineStore} from "pinia";
 import {TaskInfoInterface as TaskInfo} from './interfaces'
+import {nanoid} from 'nanoid'
+import _ from 'lodash-es'
 export const databaseStore = defineStore('database', {
     state: () => {
         return {
@@ -46,7 +48,10 @@ export const useStore = defineStore('task', {
     },
     actions: {
         addTask(task:TaskInfo){
-            this.tasks.push(task)
+            let newTask=_.cloneDeep(task,{
+                nanoid:nanoid(6)
+            })
+            this.tasks.push(newTask)
         }
     }
 })
