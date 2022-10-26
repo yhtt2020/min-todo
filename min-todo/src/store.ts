@@ -2,11 +2,16 @@ import {defineStore} from "pinia";
 import {TaskInfoInterface as TaskInfo} from './interfaces'
 import {nanoid} from 'nanoid'
 import _ from 'lodash-es'
+import {DataSourceTypes,MenuState} from './consts'
+import {Menu} from "ant-design-vue";
 export const databaseStore = defineStore('database', {
     state: () => {
         return {
             database: {
-                tasks: [] as TaskInfo[]
+                tasks: [] as TaskInfo[],
+                config:{
+
+                },
             }
         }
     },
@@ -26,31 +31,43 @@ export const databaseStore = defineStore('database', {
                 this.database = await this.getFromDataSource()
                 if(this.database===null){
                     this.database={
-                        tasks:[]
+                        tasks:[],
+                        config:{},
                     }
                 }
                 this.loadTasks()
+                this.loadConfigs()
             } catch (e) {
                 console.warn(e)
                 return false
             }
         },
+        async loadTablesObject(tableName:any){
+            let data
+            if (typeof this.database[tableName] === 'undefined') {
+                this.database[tableName]={}
+            }
+            data= this.database[tableName]
+            return data
+        },
+        async loadConfigs(){
+            await this.loadTablesObject('config')
+            configStore().config =this.database.config
+        },
         async loadTasks() {
             if (typeof this.database.tasks === 'undefined') {
                 this.database.tasks = []
-                useStore().tasks = []
+                taskStore().tasks = []
             } else {
-                useStore().tasks = this.database.tasks
+                taskStore().tasks = this.database.tasks
             }
         },
         async save(){
             this.saveToDataSource()
-
-
         }
     }
 })
-export const useStore = defineStore('task', {
+export const taskStore = defineStore('task', {
     state: () => {
         return {
             tasks: [] as TaskInfo[],
@@ -71,16 +88,24 @@ export const useStore = defineStore('task', {
         }
     }
 })
-const DataSourceTypes={
-    LOCAL_STORAGE:'localStorage'
-}
-
 
 
 export const configStore = defineStore('config', {
     state: () => {
         return {
-            dataSourceType: DataSourceTypes.LOCAL_STORAGE //cloud
+            dataSourceType: DataSourceTypes.LOCAL_STORAGE, //cloud
+            config:{
+                menuState:MenuState.FOLD
+            },
+        }
+    },
+    actions:{
+        toggleMenu(){
+            if( typeof this.config.menuState ==='undefined'){
+                this.config.menuState=MenuState.FOLD
+            }
+            this.config.menuState=this.config.menuState===MenuState.FOLD?MenuState.UN_FOLD:MenuState.FOLD
+            console.log(this.config.menuState)
         }
     }
 })

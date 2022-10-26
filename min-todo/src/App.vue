@@ -5,7 +5,8 @@
 import {AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,
   MenuUnfoldOutlined,ToTopOutlined,MoreOutlined} from '@ant-design/icons-vue'
 import {mapActions, mapState} from "pinia";
-import {useStore,databaseStore,} from './store'
+import {taskStore, databaseStore, configStore,} from './store'
+import {MenuState} from './consts'
 import {TaskInfoInterface as TaskInfo} from "./interfaces";
 import ActiveTaskDetail from './components/ActiveTaskDetail.vue'
 import dayjs from 'dayjs'
@@ -14,7 +15,8 @@ import TaskList from "./components/TaskList.vue";
 import TaskInput from "./components/TaskInput.vue";
 export default {
   computed:{
-    ...mapState(useStore,['activeTask','currentTasks','tasks'])
+    ...mapState(taskStore,['activeTask','currentTasks','tasks']),
+    ...mapState(configStore,['config']),
   },
   components:{
     TaskInput,
@@ -26,6 +28,7 @@ export default {
   data(){
     return {
       zhCN,
+      MenuState
     }
   },
   async mounted() {
@@ -35,7 +38,8 @@ export default {
     })
   },
   methods:{
-    ...mapActions(useStore,['setActiveTask']),
+    ...mapActions(taskStore,['setActiveTask']),
+
     getPopupContainer(el, dialogContext) {
       if (dialogContext) {
         return dialogContext.getDialogWrap();
@@ -53,7 +57,7 @@ export default {
   <a-config-provider  :locale="zhCN" :getPopupContainer="getPopupContainer">
     <a-layout theme="light" style="height: 100vh">
 <!--      <a-layout-header theme="light">header</a-layout-header>-->
-        <a-layout-sider :width="100" class="sidebar" theme="light">
+        <a-layout-sider v-show="config.menuState===MenuState.UN_FOLD" :width="100" class="sidebar" theme="light">
           <ul class="nav-items">
             <li class="active"><div class="nav-wrapper"> <alert-outlined  style="font-size:16px"/> 今天</div></li>
             <li><div class="nav-wrapper"><calendar-outlined style="font-size:16px"/> 最近7天</div></li>
@@ -64,7 +68,7 @@ export default {
           <div class="small-title">清单</div>
         </a-layout-sider>
 
-        <div   style="width:190px !important;background: white;padding-left: 10px;padding-top: 10px;padding-right: 10px">
+        <div v-show="config.menuState===MenuState.UN_FOLD"   style="width:190px !important;background: white;padding-left: 10px;padding-top: 10px;padding-right: 10px">
           <div class="middle-title" >
             全部待办
             <span style="float:right">{{tasks.length}}</span>
@@ -75,7 +79,7 @@ export default {
           <TaskList :data="tasks">
           </TaskList>
         </div>
-        <div   theme="light" style="min-width: auto !important;flex: auto !important;max-width: 800px !important;width: auto !important; padding-top: 10px;padding-left: 10px;padding-right: 10px;border-left: 1px solid #e1e1e1">
+        <div   theme="light" style="min-width: auto !important;flex: auto !important;max-width: 999999px !important;width: auto !important; padding-top: 10px;padding-left: 10px;padding-right: 10px;border-left: 1px solid #e1e1e1">
          <ActiveTaskDetail></ActiveTaskDetail>
         </div>
       <div>

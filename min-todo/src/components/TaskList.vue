@@ -2,15 +2,23 @@
 import {TaskInfoInterface} from "../interfaces";
 import dayjs from "dayjs";
 import {mapActions} from "pinia";
-import {useStore} from "../store";
+import {taskStore} from "../store";
 
 export default {
   name: 'TaskList',
   props: {
     data: [] as TaskInfoInterface[]
   },
+  data(){
+    return {
+      ellipsis:{
+        rows:1,
+      }
+    }
+
+  },
   methods: {
-    ...mapActions(useStore, ['setActiveTask']),
+    ...mapActions(taskStore, ['setActiveTask']),
     getDistance(deadTime) {
       let now = dayjs().unix()
       let distance = deadTime - now
@@ -45,13 +53,29 @@ export default {
 <template>
   <ul class="task-list">
     <li @click="setActiveTask(task)" v-for="task in data">
-      <a-checkbox v-model:checked="task.completed"></a-checkbox>
-      &nbsp;<span :class="{'completed':task.completed}">{{ task.title }}</span> <span class="dead-time"
-                                                v-if="task.deadTime">{{ getDistance(task.deadTime) }}</span>
+      <div style="display: flex">
+        <div style="min-width: 30px">
+          <a-checkbox v-model:checked="task.completed"></a-checkbox>
+        </div>
+        <div  style="flex: auto;text-wrap: normal;word-break: break-all;width: 0" >
+          <div :class="{'completed':task.completed}" style="word-break: break-all;text-overflow:ellipsis;overflow:hidden;white-space: nowrap;">
+             <span  style="margin-bottom: 0;line-height: 28px;"
+             >{{task.title}}</span>
+
+          </div>
+        </div>
+        <div>
+          <span style="margin-left: 5px;white-space: nowrap;word-break-wrap: none;display: inline-block" class="dead-time"  v-if="task.deadTime">{{ getDistance(task.deadTime) }}</span>
+        </div>
+      </div>
     </li>
   </ul>
 </template>
-
+<style>
+.ant-typography del{
+  color: #ccc;
+}
+</style>
 <style scoped lang="scss">
 .dead-time {
   color: #999;
@@ -79,4 +103,5 @@ export default {
     }
   }
 }
+
 </style>

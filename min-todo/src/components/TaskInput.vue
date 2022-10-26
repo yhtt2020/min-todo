@@ -39,7 +39,7 @@
 <script>
 import dayjs from "dayjs";
 import {mapActions, mapState} from "pinia";
-import {useStore} from "../store";
+import {taskStore} from "../store";
 import {CalendarOutlined} from '@ant-design/icons-vue'
 import objectSupport from "dayjs/plugin/objectSupport";
 dayjs.locale('zh-cn')
@@ -50,7 +50,7 @@ export default {
     CalendarOutlined
   },
   computed: {
-    ...mapState(useStore, ['currentTasks', 'tasks'])
+    ...mapState(taskStore, ['currentTasks', 'tasks'])
   },
   data() {
     return {
@@ -75,7 +75,7 @@ export default {
         }
       }
     },
-    ...mapActions(useStore, ['addTask']),
+    ...mapActions(taskStore, ['addTask']),
 
     setToday() {
       this.newTaskDeadDate = dayjs()
