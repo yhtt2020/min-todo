@@ -12,6 +12,9 @@ export const  listStore=defineStore('list',{
     },
     actions:{
         add(item: ListInfo) {
+            if(item.name.trim()===''){
+                return false
+            }
             let newTask = _.cloneDeep(Object.assign(item, {
                 nanoid: nanoid(6),
                 createTime: Date.now()

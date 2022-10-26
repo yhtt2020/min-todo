@@ -54,6 +54,9 @@ export default {
 </script>
 
 <template>
+  <div v-if="data.length===0" style="margin-left: -20px;margin-top: calc( (  100vh - 69px ) / 2 - 50px)">
+    <a-empty description=""></a-empty>
+  </div>
   <ul class="task-list">
     <a-dropdown :trigger="['contextmenu']" v-for="task in data">
     <li :class="{'active':task===activeTask}" @click="setActiveTask(task)" >

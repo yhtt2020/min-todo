@@ -87,6 +87,9 @@ export const taskStore = defineStore('task', {
     },
     actions: {
         add(item: TaskInfo) {
+            if(item.title.trim()===''){
+                return false
+            }
             let newTask = _.cloneDeep(Object.assign(item, {
                 nanoid: nanoid(6),
                 createTime: Date.now()
