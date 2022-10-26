@@ -139,6 +139,7 @@ export default {
 <style>
 body{
   user-select: none;
+  overflow: hidden;
 }
 
 </style>

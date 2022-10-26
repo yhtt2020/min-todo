@@ -3,11 +3,14 @@ import {ListInfoInterface} from "../interfaces";
 import dayjs from "dayjs";
 import {mapActions, mapState} from "pinia";
 import {listStore} from "../stores/list";
-
+import {OrderedListOutlined} from '@ant-design/icons-vue'
 export default {
   name: 'ListList',
   props: {
     data: [] as ListInfoInterface[]
+  },
+  components:{
+    OrderedListOutlined
   },
   data(){
     return {
@@ -34,8 +37,8 @@ export default {
     <li :title="list.name" :class="{'active':list===activeList}" @click="setActiveList(list)" >
       <div class="nav-wrapper">
         <div style="display: flex">
-          <div style="min-width: 22px">
-            <a-avatar :size="18" shape="square" ></a-avatar>
+          <div style="min-width: 20px">
+            <ordered-list-outlined />
           </div>
           <div  style="flex: auto;text-wrap: normal;word-break: break-all;width: 0" >
             <div :class="{'completed':list.completed}" style="word-break: break-all;text-overflow:ellipsis;overflow:hidden;white-space: nowrap;">
