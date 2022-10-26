@@ -77,16 +77,21 @@ export const taskStore = defineStore('task', {
     },
     actions: {
         addTask(task:TaskInfo){
-            let newTask=_.cloneDeep(task,{
-                nanoid:nanoid(6)
-            })
+            let newTask=_.cloneDeep(Object.assign(task,{
+                nanoid:nanoid(6),
+                createTime:Date.now()
+            }))
             this.tasks.push(newTask)
         },
         setActiveTask(task:TaskInfo){
             this.activeTask=task
             console.log(task)
+        },
+        removeTask(nanoid){
+          this.tasks.splice(this.tasks.findIndex(task=>task.nanoid===nanoid),1)
         }
     }
+
 })
 
 

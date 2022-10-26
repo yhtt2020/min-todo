@@ -1,5 +1,5 @@
 <template>
-  <a-empty style="margin-top: calc( 100vh / 2 - 90px )" v-if="!activeTask" description="点击代办查看详情">
+  <a-empty style="margin-top: calc( 100vh / 2 - 90px )" v-if="!activeTask.createTime" description="点击代办查看详情">
   </a-empty>
   <template v-else>
     <div><span class="title-action"><span @click="toggleMenu"><menu-fold-outlined v-if="config.menuState===MenuState.UN_FOLD"/><menu-unfold-outlined v-else /></span></span> <a-checkbox v-model:checked="activeTask.completed"></a-checkbox>

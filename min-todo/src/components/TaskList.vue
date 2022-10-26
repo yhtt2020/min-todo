@@ -1,7 +1,7 @@
 <script lang="ts">
 import {TaskInfoInterface} from "../interfaces";
 import dayjs from "dayjs";
-import {mapActions} from "pinia";
+import {mapActions, mapState} from "pinia";
 import {taskStore} from "../store";
 
 export default {
@@ -17,8 +17,11 @@ export default {
     }
 
   },
+  computed:{
+    ...mapState(taskStore,['activeTask'])
+  },
   methods: {
-    ...mapActions(taskStore, ['setActiveTask']),
+    ...mapActions(taskStore, ['setActiveTask','removeTask']),
     getDistance(deadTime) {
       let now = dayjs().unix()
       let distance = deadTime - now
@@ -52,16 +55,16 @@ export default {
 
 <template>
   <ul class="task-list">
-    <li @click="setActiveTask(task)" v-for="task in data">
+    <a-dropdown :trigger="['contextmenu']" v-for="task in data">
+    <li :class="{'active':task===activeTask}" @click="setActiveTask(task)" >
       <div style="display: flex">
-        <div style="min-width: 30px">
+        <div style="min-width: 25px">
           <a-checkbox v-model:checked="task.completed"></a-checkbox>
         </div>
         <div  style="flex: auto;text-wrap: normal;word-break: break-all;width: 0" >
           <div :class="{'completed':task.completed}" style="word-break: break-all;text-overflow:ellipsis;overflow:hidden;white-space: nowrap;">
              <span  style="margin-bottom: 0;line-height: 28px;"
              >{{task.title}}</span>
-
           </div>
         </div>
         <div>
@@ -69,6 +72,12 @@ export default {
         </div>
       </div>
     </li>
+      <template #overlay>
+        <a-menu>
+          <a-menu-item @click="removeTask(task.nanoid)">删除</a-menu-item>
+        </a-menu>
+      </template>
+    </a-dropdown>
   </ul>
 </template>
 <style>
@@ -88,8 +97,10 @@ export default {
   padding-left: 0;
 
   li {
-    &:hover, .active {
-      background: rgba(30, 30, 231, 0.26);
+    &:hover, &.active {
+      background:#1890ff;
+      border-radius: 4px;
+      color: white;
     }
 
     border-bottom: 1px solid #f1f1f1;
