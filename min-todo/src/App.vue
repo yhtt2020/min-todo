@@ -7,16 +7,18 @@ import {AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,
 import {mapActions, mapState} from "pinia";
 import {useStore,databaseStore,} from './store'
 import {TaskInfoInterface as TaskInfo} from "./interfaces";
+import ActiveTaskDetail from './components/ActiveTaskDetail.vue'
 import dayjs from 'dayjs'
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import TaskList from "./components/TaskList.vue";
 import TaskInput from "./components/TaskInput.vue";
 export default {
   computed:{
-    ...mapState(useStore,['currentTasks','tasks'])
+    ...mapState(useStore,['activeTask','currentTasks','tasks'])
   },
   components:{
     TaskInput,
+    ActiveTaskDetail,
     TaskList,
     AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,
       MenuUnfoldOutlined,ToTopOutlined,MoreOutlined
@@ -30,7 +32,7 @@ export default {
     await databaseStore().init()
   },
   methods:{
-
+    ...mapActions(useStore,['setActiveTask']),
     getPopupContainer(el, dialogContext) {
       if (dialogContext) {
         return dialogContext.getDialogWrap();
@@ -57,7 +59,6 @@ export default {
           </ul>
           <a-divider style="margin-top: -10px;margin-bottom: 5px" />
           <div class="small-title">清单</div>
-
         </a-layout-sider>
 
         <div   style="width:190px !important;background: white;padding-left: 10px;padding-top: 10px;padding-right: 10px">
@@ -71,23 +72,8 @@ export default {
           <TaskList :data="tasks">
           </TaskList>
         </div>
-
         <div   theme="light" style="min-width: auto !important;flex: auto !important;max-width: 800px !important;width: auto !important; padding-top: 10px;padding-left: 10px;padding-right: 10px;border-left: 1px solid #e1e1e1">
-          <div><span class="title-action"><menu-unfold-outlined /></span> <a-checkbox></a-checkbox> 任务
-          <span class="extra-actions">
-            <span class="action"><to-top-outlined /> 置顶</span>
-            &nbsp;
-            <span class="action"><more-outlined /></span>
-          </span>
-          </div>
-          <a-divider style="margin-top: 10px;margin-bottom: 10px"></a-divider>
-          <div>
-            <a-input size="small" :bordered="false" value="标题标题"></a-input>
-            <div>
-              <a-textarea placeholder="描述" :bordered="false" :autosize="false">
-              </a-textarea>
-            </div>
-          </div>
+         <ActiveTaskDetail></ActiveTaskDetail>
         </div>
       <div>
 
@@ -161,9 +147,6 @@ body{
 
 
 
-.extra-actions{
-  float:right;
 
-}
 
 </style>

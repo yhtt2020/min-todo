@@ -15,6 +15,10 @@ export const databaseStore = defineStore('database', {
             if(configStore().dataSourceType===DataSourceTypes.LOCAL_STORAGE)
            return JSON.parse(<string>localStorage.getItem('database'))
         },
+        async saveToDataSource(){
+            if(configStore().dataSourceType===DataSourceTypes.LOCAL_STORAGE)
+                 localStorage.setItem('database',JSON.stringify(this.database))
+        },
         async init() {
             try {
                 this.database = await this.getFromDataSource()
@@ -36,6 +40,10 @@ export const databaseStore = defineStore('database', {
             } else {
                 useStore().tasks = this.database.tasks
             }
+        },
+        async save(){
+            this.saveToDataSource()
+
         }
     }
 })
@@ -44,6 +52,7 @@ export const useStore = defineStore('task', {
         return {
             tasks: [] as TaskInfo[],
             currentTasks: [] as TaskInfo[],
+            activeTask:<TaskInfo>{}
         }
     },
     actions: {
@@ -52,6 +61,11 @@ export const useStore = defineStore('task', {
                 nanoid:nanoid(6)
             })
             this.tasks.push(newTask)
+            databaseStore().save()
+        },
+        setActiveTask(task:TaskInfo){
+            this.activeTask=task
+            console.log(task)
         }
     }
 })

@@ -1,6 +1,8 @@
 <script  lang="ts">
 import {TaskInfoInterface} from "../interfaces";
 import dayjs from "dayjs";
+import {mapActions} from "pinia";
+import {useStore} from "../store";
 
 export default {
   name:'TaskList',
@@ -8,6 +10,7 @@ export default {
     data:[] as TaskInfoInterface[]
   },
   methods:{
+    ...mapActions(useStore,['setActiveTask']),
     getDistance(deadTime){
       let now= dayjs().unix()
       let distance=deadTime-now
@@ -40,8 +43,8 @@ export default {
 
 <template>
   <ul class="task-list">
-    <li v-for="task in data">
-      <a-checkbox></a-checkbox>&nbsp;{{task.title}} <span class="dead-time" v-if="task.deadTime">{{getDistance(task.deadTime)}}</span>
+    <li @click="setActiveTask(task)" v-for="task in data">
+      <a-checkbox></a-checkbox><span >&nbsp;{{task.title}}</span> <span class="dead-time" v-if="task.deadTime">{{getDistance(task.deadTime)}}</span>
     </li>
   </ul>
 </template>
