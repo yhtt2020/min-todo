@@ -11,7 +11,8 @@
        设置时间 <TimerSelector v-model="activeTask.deadTime"/>
       </template></span>
       <span class="extra-actions">
-            <span class="action"><to-top-outlined /> 置顶</span>
+            <span @click="toggleTop"  v-if="activeTask.isTop" class="action"><to-top-outlined style="transform: rotate(180deg)" /> 取消置顶</span>
+            <span @click="toggleTop" v-else class="action"><to-top-outlined /> 置顶</span>
             &nbsp;
             <span class="action"><more-outlined /></span>
           </span>
@@ -67,7 +68,10 @@ export default {
     }
   },
   methods:{
-    ...mapActions(configStore,['toggleMenu'])
+    ...mapActions(configStore,['toggleMenu']),
+    toggleTop(){
+      this.activeTask.isTop=!this.activeTask.isTop
+    }
   }
 }
 </script>
@@ -76,5 +80,8 @@ export default {
 .extra-actions{
   float:right;
 
+}
+.action{
+  cursor: pointer;
 }
 </style>

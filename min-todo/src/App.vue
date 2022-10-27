@@ -112,7 +112,7 @@ export default {
           </div>
         </a-layout-sider>
 
-        <div v-show="config.menuState===MenuState.UN_FOLD"   style="width:190px !important;background: white;padding-left: 10px;padding-top: 10px;padding-right: 10px">
+        <div v-show="config.menuState===MenuState.UN_FOLD"   style="width:210px !important;background: white;padding-left: 10px;padding-top: 10px;padding-right: 10px">
           <div class="middle-title" >
             全部待办
             <span style="float:right">{{tasks.length}}</span>

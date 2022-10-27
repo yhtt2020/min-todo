@@ -3,11 +3,14 @@ import {TaskInfoInterface} from "../interfaces";
 import dayjs from "dayjs";
 import {mapActions, mapState} from "pinia";
 import {taskStore} from "../store";
-
+import {ToTopOutlined} from '@ant-design/icons-vue'
 export default {
   name: 'TaskList',
   props: {
     data: [] as TaskInfoInterface[]
+  },
+  components:{
+    ToTopOutlined
   },
   data(){
     return {
@@ -67,7 +70,7 @@ export default {
         <div  style="flex: auto;text-wrap: normal;word-break: break-all;width: 0" >
           <div :class="{'completed':task.completed}" style="word-break: break-all;text-overflow:ellipsis;overflow:hidden;white-space: nowrap;">
              <span  style="margin-bottom: 0;line-height: 28px;"
-             >{{task.title}}</span>
+             ><to-top-outlined v-if="task.isTop"/> {{task.title}}</span>
           </div>
         </div>
         <div>
