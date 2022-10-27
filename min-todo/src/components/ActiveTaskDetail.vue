@@ -4,7 +4,12 @@
   <template v-else>
     <div><span class="title-action"><span @click="toggleMenu"><menu-fold-outlined v-if="config.menuState===MenuState.UN_FOLD"/><menu-unfold-outlined v-else /></span></span> <a-checkbox v-model:checked="activeTask.completed"></a-checkbox>
 
-      &nbsp;{{time}}
+      &nbsp;
+      <span @click="selectTime">
+      <template v-if="activeTask.deadTime">{{time}} <CalendarOutlined/></template>
+      <template v-else>
+       设置时间 <CalendarOutlined/>
+      </template></span>
       <span class="extra-actions">
             <span class="action"><to-top-outlined /> 置顶</span>
             &nbsp;
