@@ -1,4 +1,9 @@
-# Vue 3 + TypeScript + Vite
+# 基于Vue3技术栈的个人待办应用——min-todo
+##开源协议
+ AGPL3 协议开源
+
+可自用，额外允许二次开发后上架到想天浏览器应用市场
+
 ##技术框架
 
 项目由Vue3 + TS + Vite +Pina 搭建
