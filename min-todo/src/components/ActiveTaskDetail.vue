@@ -3,6 +3,8 @@
   </a-empty>
   <template v-else>
     <div><span class="title-action"><span @click="toggleMenu"><menu-fold-outlined v-if="config.menuState===MenuState.UN_FOLD"/><menu-unfold-outlined v-else /></span></span> <a-checkbox v-model:checked="activeTask.completed"></a-checkbox>
+
+      &nbsp;{{time}}
       <span class="extra-actions">
             <span class="action"><to-top-outlined /> 置顶</span>
             &nbsp;
@@ -27,6 +29,7 @@ import {configStore} from "../store";
 import {DataSourceTypes,MenuState} from '../consts'
 import {AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,MenuFoldOutlined,
   MenuUnfoldOutlined,ToTopOutlined,MoreOutlined} from '@ant-design/icons-vue'
+import dayjs from "dayjs";
 export default {
   name: "TaskDetail",
   data(){
@@ -34,13 +37,27 @@ export default {
       MenuState
     }
   },
+  mounted() {
+  },
   components:{
     AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,MenuFoldOutlined,
     MenuUnfoldOutlined,ToTopOutlined,MoreOutlined
   },
   computed:{
     ...mapWritableState(taskStore,['activeTask','currentTasks','tasks']),
-    ...mapWritableState(configStore,['config'])
+    ...mapWritableState(configStore,['config']),
+    time(){
+      if(this.activeTask.deadTime){
+        if(dayjs.unix(this.activeTask.deadTime).year()===dayjs().year()){
+          return dayjs.unix(this.activeTask.deadTime).format('HH:mm,MM月DD日') //同一年不显示年份
+        }else{
+          return dayjs.unix(this.activeTask.deadTime).format('HH:mm,YY年MM月DD日')
+        }
+      }else{
+        return ''
+      }
+
+    }
   },
   methods:{
     ...mapActions(configStore,['toggleMenu'])
