@@ -92,7 +92,9 @@ export const taskStore = defineStore('task', {
             }
             let newTask = _.cloneDeep(Object.assign(item, {
                 nanoid: nanoid(6),
-                createTime: Date.now()
+                createTime: Date.now(),
+                description:'',
+                descriptionType:'text'
             }))
             this.tasks.push(newTask)
         },

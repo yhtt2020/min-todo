@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
+    "@wangeditor/editor": "^5.1.22",
+    "@wangeditor/editor-for-vue": "^5.1.12",
     "ant-design-vue": "^3.2.13",
     "dayjs": "^1.11.6",
     "lodash": "^4.17.21",

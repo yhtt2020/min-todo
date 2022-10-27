@@ -107,6 +107,9 @@ export default {
       background:#1890ff;
       border-radius: 4px;
       color: white;
+      .dead-time{
+        color: #f3f3f3;
+      }
     }
 
     border-bottom: 1px solid #f1f1f1;

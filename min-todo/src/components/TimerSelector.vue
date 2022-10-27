@@ -1,5 +1,5 @@
 <template>
-  <calendar-outlined @click="this.dateTimePickerVisible=true" :style="{color:this.modelValue?'#4545fa':'rgba(0, 0, 0, 0.45)'}"/>
+  <calendar-outlined @click="this.dateTimePickerVisible=true" :style="{color:this.modelValue?'#1890ff':'rgba(0, 0, 0, 0.45)'}"/>
   <a-modal
       @ok="seTime"
       @cancel="clearDeadTime"
@@ -46,7 +46,7 @@ export default {
   },
   props:{
     modelValue:{
-      type:String
+      type:Number
     }
   },
   watch:{

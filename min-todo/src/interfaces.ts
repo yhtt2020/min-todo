@@ -1,6 +1,7 @@
 export interface TaskInfoInterface {
     title: string,
     description: string,
+    descriptionType:string,//text rich markdown
     deadTime:number,
     createTime: number,
     updateTime: number,
