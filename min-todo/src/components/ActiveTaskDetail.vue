@@ -6,9 +6,9 @@
 
       &nbsp;
       <span @click="selectTime">
-      <template v-if="activeTask.deadTime">{{time}} <CalendarOutlined/></template>
+      <template v-if="activeTask.deadTime">{{time}} <TimerSelector v-model="activeTask.deadTime"/></template>
       <template v-else>
-       设置时间 <CalendarOutlined/>
+       设置时间 <TimerSelector v-model="activeTask.deadTime"/>
       </template></span>
       <span class="extra-actions">
             <span class="action"><to-top-outlined /> 置顶</span>
@@ -35,6 +35,7 @@ import {DataSourceTypes,MenuState} from '../consts'
 import {AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,MenuFoldOutlined,
   MenuUnfoldOutlined,ToTopOutlined,MoreOutlined} from '@ant-design/icons-vue'
 import dayjs from "dayjs";
+import TimerSelector from "./TimerSelector.vue";
 export default {
   name: "TaskDetail",
   data(){
@@ -45,6 +46,7 @@ export default {
   mounted() {
   },
   components:{
+    TimerSelector,
     AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,MenuFoldOutlined,
     MenuUnfoldOutlined,ToTopOutlined,MoreOutlined
   },

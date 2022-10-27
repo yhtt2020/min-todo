@@ -114,10 +114,14 @@ export default {
       this.dateTimePickerVisible=false
       this.$emit('update:modelValue',time)
     },
-    clearDeadTime(){
-      this.newDate=null
-      this.newTime=null
-      this.$emit('update:modelValue',null)
+    clearDeadTime(e){
+      console.log(e)
+      if(e.target.nodeName.toLowerCase()==='span'){
+        this.newDate=null
+        this.newTime=null
+        this.$emit('update:modelValue',null)
+      }
+
     },
     onTimePickerChange() {
       if (this.newTime) {
