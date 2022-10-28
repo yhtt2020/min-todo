@@ -44,7 +44,7 @@ export default {
           <div  style="flex: auto;text-wrap: normal;word-break: break-all;width: 0" >
             <div :class="{'completed':list.completed}" style="word-break: break-all;text-overflow:ellipsis;overflow:hidden;white-space: nowrap;">
              <span
-             >{{list.title}} </span> <span style="float:right;color: #999;">{{ list.count }}</span>
+             >{{list.title}} </span> <span style="float:right;color: #999;">{{ list.count>0?list.count:'' }}</span>
             </div>
           </div>
         </div>

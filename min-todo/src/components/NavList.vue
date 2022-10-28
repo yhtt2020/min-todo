@@ -1,0 +1,98 @@
+<template>
+  <ul class="nav-items">
+    <li @click="()=>{this.setTab('personal');}" :class="{'active':this.isActive('personal')}" >
+      <div class="nav-wrapper">
+        <user-outlined style="font-size:16px"/>
+        个人 <span style="float:right;color: #999;">{{ this.tasks.filter(task=>!task.completed).length }}</span></div>
+    </li>
+    <li @click="()=>{this.setTab('today');}" :class="{'active':this.isActive('today')}" >
+      <div class="nav-wrapper">
+        <alert-outlined style="font-size:16px"/>
+        今天
+      </div>
+    </li>
+    <li @click="()=>{this.setTab('week');}" :class="{'active':this.isActive('week')}">
+      <div class="nav-wrapper">
+        <calendar-outlined style="font-size:16px"/>
+        7天
+      </div>
+    </li>
+    <li @click="()=>{this.setTab('group');}" :class="{'active':this.isActive('group')}">
+      <div class="nav-wrapper">
+        <team-outlined style="font-size:16px"/>
+        团队
+      </div>
+    </li>
+  </ul>
+</template>
+
+<script>
+import {mapState, mapWritableState} from "pinia";
+import {listStore} from "../stores/list";
+import {taskStore} from "../stores/task";
+import {  AlertOutlined,  UserOutlined, TeamOutlined,CalendarOutlined } from '@ant-design/icons-vue'
+export default {
+  name: "NavList",
+  components:{
+    AlertOutlined,  UserOutlined, TeamOutlined,CalendarOutlined
+  },
+  data(){
+    return {
+      currentTab:{
+        name:'personal'
+      },
+      tabs:[
+        {
+          index:0,
+          alias:'个人',
+          name:'personal'
+        },
+        {
+          index:1,
+          alias:'今天',
+          name:'today'
+        },
+        {
+          index:2,
+          alias:'最近七天',
+          name:'week'
+        },
+        {
+          index:3,
+          alias:'团队',
+          name:'group'
+        }
+      ]
+    }
+  },
+  computed:{
+    ...mapState(listStore, ['lists','displayLists']),
+    ...mapWritableState(listStore, ['activeList']),
+    ...mapState(taskStore, ['activeTask', 'currentTasks', 'tasks', 'displayList']),
+
+  },
+  methods:{
+    setTab(name){
+      this.activeList={
+
+      }
+      this.currentTab.name=name
+    },
+    isActive(name){
+      if(Object.keys(this.activeList).length){
+        return false
+      }else {
+        if (this.currentTab.name === name) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

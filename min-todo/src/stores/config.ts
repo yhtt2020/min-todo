@@ -1,7 +1,10 @@
 import {defineStore} from "pinia";
 import {DataSourceTypes, MenuState,sortType} from "../consts";
 import {ISort, IListInfo} from "../interfaces";
-
+import {ref} from "vue";
+window.addEventListener('resize',()=>{
+    configStore().runtime.windowWidth=document.body.clientWidth
+})
 export const configStore = defineStore('config', {
     state: () => {
         return {
@@ -9,8 +12,14 @@ export const configStore = defineStore('config', {
             config: {
                 menuState: MenuState.FOLD,
                 showComplete:false,
-                sort:<ISort>sortType.TIME
+                sort:<ISort>sortType.TIME,
             },
+            runtime:{
+                windowWidth:document.body.clientWidth
+            },
+            filter:{
+
+            }
         }
     },
     actions: {

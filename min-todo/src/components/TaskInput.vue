@@ -1,10 +1,9 @@
 <template>
-  <a-input class="add-task-input"  size="small" v-model:value="newTask.title" @pressEnter="addNewTask" :placeholder="getPlaceholder()">
+  <a-input class="add-task-input"  :size="runtime.windowWidth>=600?'normal':'small'" v-model:value="newTask.title" @pressEnter="addNewTask" :placeholder="getPlaceholder()">
     <template #suffix>
       <TimerSelector v-model="newTask.deadTime"/>
     </template>
   </a-input>
-
 </template>
 
 <script>
@@ -14,18 +13,20 @@ import {taskStore} from "../stores/task";
 import {CalendarOutlined} from '@ant-design/icons-vue'
 import objectSupport from "dayjs/plugin/objectSupport";
 import TimerSelector from "./TimerSelector.vue";
-import {listStore} from "../store";
+import {configStore, listStore} from "../store";
 dayjs.locale('zh-cn')
 dayjs.extend(objectSupport)
 export default {
   name: "TaskInput",
   components: {
     TimerSelector,
-    CalendarOutlined
+    CalendarOutlined,
+
   },
   computed: {
     ...mapState(taskStore, ['currentTasks', 'tasks']),
-    ...mapState(listStore,['activeList'])
+    ...mapState(listStore,['activeList']),
+    ...mapState(configStore,['runtime'])
   },
   data() {
     return {
@@ -38,7 +39,6 @@ export default {
     }
   },
   mounted() {
-
 
   },
   methods: {
