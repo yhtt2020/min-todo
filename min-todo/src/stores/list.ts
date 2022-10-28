@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import {ListInfoInterface as ListInfo, TaskInfoInterface as TaskInfo} from "../interfaces";
 import {nanoid} from "nanoid";
+// @ts-ignore
 import _ from "lodash-es";
 
 export const  listStore=defineStore('list',{
@@ -12,7 +13,7 @@ export const  listStore=defineStore('list',{
     },
     actions:{
         add(item: ListInfo) {
-            if(item.name.trim()===''){
+            if(item.title.trim()===''){
                 return false
             }
             let newTask = _.cloneDeep(Object.assign(item, {
@@ -21,7 +22,7 @@ export const  listStore=defineStore('list',{
             }))
             this.lists.push(newTask)
         },
-        remove(nanoid){
+        remove(nanoid:string){
             if (this.activeList.nanoid === nanoid) {
                 this.activeList={}
             }

@@ -1,6 +1,8 @@
 import {defineStore} from "pinia";
 import {TaskInfoInterface as TaskInfo} from "../interfaces";
 import {nanoid} from "nanoid";
+import {configStore} from "./config";
+// @ts-ignore
 import _ from 'lodash-es'
 export const taskStore = defineStore('task', {
     state: () => {
@@ -9,6 +11,16 @@ export const taskStore = defineStore('task', {
             currentTasks: [] as TaskInfo[],
             activeTask: <TaskInfo>{}
         }
+    },
+    getters:{
+      displayList:(state)=>  {
+          //显示
+          let displayArray= state.tasks
+          if(!configStore().config.showComplete){
+              displayArray=displayArray.filter(item=>!item.completed)
+          }
+          return displayArray
+      }
     },
     actions: {
         add(item: TaskInfo) {
@@ -27,7 +39,7 @@ export const taskStore = defineStore('task', {
             this.activeTask = task
             console.log(task)
         },
-        removeTask(nanoid) {
+        removeTask(nanoid:string) {
             if (this.activeTask.nanoid === nanoid) {
                 this.activeTask={}
             }

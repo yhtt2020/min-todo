@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import {mapActions, mapState} from "pinia";
 import {taskStore} from "../stores/task";
 import {ToTopOutlined} from '@ant-design/icons-vue'
+import { configStore } from "../store";
 export default {
   name: 'TaskList',
   props: {

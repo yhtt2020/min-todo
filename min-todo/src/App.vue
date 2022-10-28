@@ -6,7 +6,7 @@ import './assets/index.css'
 import {AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,
   MenuUnfoldOutlined,ToTopOutlined,MoreOutlined,PlusOutlined,
   EllipsisOutlined} from '@ant-design/icons-vue'
-import {mapActions, mapState} from "pinia";
+import {mapActions, mapGetters, mapState} from "pinia";
 import { databaseStore, configStore,listStore,taskStore} from './store'
 import {MenuState} from './consts'
 import { Empty } from 'ant-design-vue';
@@ -20,9 +20,9 @@ import ListList from './components/ListList.vue'
 import VueCustomScrollbars from './components/VueScrollbar.vue'
 export default {
   computed:{
-    ...mapState(taskStore,['activeTask','currentTasks','tasks']),
+    ...mapState(taskStore,['activeTask','currentTasks','tasks','displayList']),
     ...mapState(configStore,['config']),
-    ...mapState(listStore,['lists'])
+    ...mapState(listStore,['lists']),
   },
   components:{
     VueCustomScrollbars,
@@ -61,6 +61,7 @@ export default {
     ...mapActions(listStore,{
       addList:'add',
     }),
+    ...mapActions(configStore,['showCompleted','hideCompleted']),
     showAddList(){
       this.addNewListVisible = true
     },
@@ -75,7 +76,7 @@ export default {
     addNewList(){
       this.addList(this.newList)
       this.addNewListVisible = false
-      this.newList.name=''
+      this.newList.title=''
     }
   }
 }
@@ -101,7 +102,7 @@ export default {
               centered
               @ok="addNewList()"
           >
-           <a-input @pressEnter="addNewList()" placeholder="清单名称"  v-model:value="newList.name"/>
+           <a-input @pressEnter="addNewList()" placeholder="清单名称"  v-model:value="newList.title"/>
           </a-modal>
           <div class="small-title">清单
             <span @click="showAddList()" style="float:right;padding-right: 10px"> <plus-outlined /></span>
@@ -119,7 +120,8 @@ export default {
             全部待办
             <a-dropdown :trigger="['click']"><span style="float:right;font-size: 18px;cursor: pointer"><ellipsis-outlined /></span><template #overlay>
               <a-menu>
-                <a-menu-item key="1">显示已完成</a-menu-item>
+                <a-menu-item v-if="!config.showComplete" @click="showCompleted" key="showCompleted">显示已完成</a-menu-item>
+                <a-menu-item v-else @click="hideCompleted" key="hideCompleted">隐藏已完成</a-menu-item>
               </a-menu>
             </template></a-dropdown>
           </div>
@@ -127,9 +129,8 @@ export default {
             <TaskInput></TaskInput>
           </div>
           <VueCustomScrollbars :settings="settings" style="position:relative;height: calc(100vh - 67px)">
-          <TaskList :data="tasks"></TaskList>
+          <TaskList :data="displayList"></TaskList>
           </VueCustomScrollbars>
-
         </div>
         <div   theme="light" style="min-width: auto !important;flex: auto !important;max-width: 999999px !important;width: auto !important; padding-top: 10px;padding-left: 10px;padding-right: 10px;border-left: 1px solid #e1e1e1">
          <ActiveTaskDetail></ActiveTaskDetail>

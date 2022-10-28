@@ -34,7 +34,7 @@ export default {
 <template>
   <ul class="nav-items">
     <a-dropdown :trigger="['contextmenu']" v-for="list in data">
-    <li :title="list.name" :class="{'active':list===activeList}" @click="setActiveList(list)" >
+    <li :title="list.title" :class="{'active':list===activeList}" @click="setActiveList(list)" >
       <div class="nav-wrapper">
         <div style="display: flex">
           <div style="min-width: 20px">
@@ -43,7 +43,7 @@ export default {
           <div  style="flex: auto;text-wrap: normal;word-break: break-all;width: 0" >
             <div :class="{'completed':list.completed}" style="word-break: break-all;text-overflow:ellipsis;overflow:hidden;white-space: nowrap;">
              <span
-             >{{list.name}}</span>
+             >{{list.title}}</span>
             </div>
           </div>
         </div>

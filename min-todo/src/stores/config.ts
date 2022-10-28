@@ -6,7 +6,8 @@ export const configStore = defineStore('config', {
         return {
             dataSourceType: DataSourceTypes.LOCAL_STORAGE, //cloud
             config: {
-                menuState: MenuState.FOLD
+                menuState: MenuState.FOLD,
+                showComplete:false,
             },
         }
     },
@@ -17,6 +18,13 @@ export const configStore = defineStore('config', {
             }
             this.config.menuState = this.config.menuState === MenuState.FOLD ? MenuState.UN_FOLD : MenuState.FOLD
             console.log(this.config.menuState)
-        }
+        },
+        showCompleted(){
+            this.config.showComplete=true
+        },
+        hideCompleted(){
+            this.config.showComplete=false
+        },
+
     }
 })
