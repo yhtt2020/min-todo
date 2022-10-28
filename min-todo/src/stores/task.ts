@@ -11,13 +11,19 @@ export const taskStore = defineStore('task', {
         return {
             tasks: [] as TaskInfo[],
             currentTasks: [] as TaskInfo[],
-            activeTask: <TaskInfo>{}
+            activeTask: <TaskInfo>{},
+            taskFilter: null,
         }
+
     },
     getters: {
         displayList: (state) => {
             //显示
             let displayArray = state.tasks
+            if(state.taskFilter){
+                displayArray=state.tasks.filter(task=>{return state.taskFilter(task)})
+            }
+
             if (!configStore().config.showComplete) {
                 displayArray = displayArray.filter(item => !item.completed)
             }
@@ -45,6 +51,7 @@ export const taskStore = defineStore('task', {
                     return ((a.listNanoid||0)>(b.listNanoid||0)?1:-1)
                 })
             }
+
             return displayArray
         }
     },

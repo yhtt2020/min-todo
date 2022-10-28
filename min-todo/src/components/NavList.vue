@@ -31,6 +31,7 @@ import {mapState, mapWritableState} from "pinia";
 import {listStore} from "../stores/list";
 import {taskStore} from "../stores/task";
 import {  AlertOutlined,  UserOutlined, TeamOutlined,CalendarOutlined } from '@ant-design/icons-vue'
+import dayjs from "dayjs";
 export default {
   name: "NavList",
   components:{
@@ -67,6 +68,7 @@ export default {
   },
   computed:{
     ...mapState(listStore, ['lists','displayLists']),
+    ...mapWritableState(taskStore,['taskFilter']),
     ...mapWritableState(listStore, ['activeList']),
     ...mapState(taskStore, ['activeTask', 'currentTasks', 'tasks', 'displayList']),
 
@@ -77,6 +79,29 @@ export default {
 
       }
       this.currentTab.name=name
+      switch (name){
+        case 'personal':
+          this.taskFilter=null;
+          break
+        case 'today':
+          this.taskFilter=(task)=>{
+            if(!task.deadTime) return false
+            else {
+              console.log( task.deadTime,Date.now())
+
+              return task.deadTime - Date.now()/1000 <=86400;
+            }
+          }
+          break
+        case 'week':
+          this.taskFilter=(task)=>{
+            if(!task.deadTime) return false
+            else {
+              return task.deadTime - Date.now()/1000 <=604800;
+            }
+          }
+          break
+      }
     },
     isActive(name){
       if(Object.keys(this.activeList).length){
