@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
-import {IListInfo as ListInfo, ITaskInfo as TaskInfo} from "../interfaces";
+import {IListInfo, IListInfo as ListInfo, ITaskInfo as TaskInfo} from "../interfaces";
+import {taskStore} from './task'
 import {nanoid} from "nanoid";
 // @ts-ignore
 import _ from "lodash-es";
@@ -10,6 +11,22 @@ export const  listStore=defineStore('list',{
             lists:[] as ListInfo[],
             activeList:<ListInfo>{}
         }
+    },
+    getters:{
+      displayLists(){
+          return this.lists.map(list=>{
+
+              list.count= taskStore().tasks.filter(task=> {
+                  if(typeof task.listNanoid =='string'){
+                      task.listNanoid=[task.listNanoid]
+                  }else if(typeof task.listNanoid === 'undefined' || task.listNanoid===null){
+                      task.listNanoid=[]
+                  }
+                  return task.listNanoid.indexOf(list.nanoid) > -1
+              }).length
+              return list
+          })
+      }
     },
     actions:{
         add(item: ListInfo) {
@@ -27,6 +44,9 @@ export const  listStore=defineStore('list',{
                 this.activeList={}
             }
             this.lists.splice(this.lists.findIndex(list => list.nanoid === nanoid), 1)
+        },
+        setActiveList(list:IListInfo){
+            this.activeList=list
         }
     }
 })

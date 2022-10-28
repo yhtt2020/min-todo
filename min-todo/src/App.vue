@@ -26,7 +26,7 @@ export default {
   computed: {
     ...mapState(taskStore, ['activeTask', 'currentTasks', 'tasks', 'displayList']),
     ...mapState(configStore, ['config']),
-    ...mapState(listStore, ['lists']),
+    ...mapState(listStore, ['lists','activeList','displayLists']),
   },
   components: {
     VueCustomScrollbars,
@@ -131,16 +131,21 @@ export default {
           <span @click="showAddList()" style="float:right;padding-right: 10px"> <plus-outlined/></span>
         </div>
         <div>
-          <a-empty v-if="lists.length===0" :image="simpleImage"/>
+          <a-empty v-if="displayLists.length===0" :image="simpleImage"/>
           <VueCustomScrollbars :settings="settings" style="position:relative;height: calc(100vh - 167px)">
-            <ListList :data="lists"></ListList>
+            <ListList :data="displayLists"></ListList>
           </VueCustomScrollbars>
         </div>
       </a-layout-sider>
 
       <div class="main-content" v-show="config.menuState===MenuState.UN_FOLD" style="">
         <div class="middle-title">
-          全部待办
+          <span v-if="!activeList">
+            全部待办
+          </span>
+          <span v-else>
+            {{activeList.title}}
+          </span>
           <a-dropdown :trigger="['click']"><span class="hover-action"
                                                  style="float:right;font-size: 18px;cursor: pointer;color: #666"><ellipsis-outlined/></span>
             <template #overlay>
@@ -185,7 +190,7 @@ export default {
       </div>
       <div theme="light"
            style="min-width: auto !important;flex: auto !important;max-width: 999999px !important;width: auto !important; padding-top: 10px;padding-left: 10px;padding-right: 10px;border-left: 1px solid #e1e1e1">
-        <ActiveTaskDetail></ActiveTaskDetail>
+        <ActiveTaskDetail @addList="showAddList"></ActiveTaskDetail>
       </div>
       <div>
 

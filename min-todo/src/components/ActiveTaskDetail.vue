@@ -22,8 +22,44 @@
           </span>
     </div>
     <a-divider style="margin-top: 10px;margin-bottom: 10px"></a-divider>
+
     <div>
-      <a-input size="small" :bordered="false" v-model:value="activeTask.title"></a-input>
+      <a-row type="flex">
+        <a-col>
+          <a-select  mode="multiple" placeholder="清单" v-if="activeTask.listNanoid.length>0" size="small"
+                    :fieldNames="{label:'title',value:'nanoid'}"
+                    v-model:value="activeTask.listNanoid"
+                    style="min-width: 100px;max-width: 120px"
+                    :options="this.lists"
+          >
+            <template #dropdownRender="{ menuNode: menu }">
+              <v-nodes :vnodes="menu" />
+              <a-divider style="margin: 4px 0" />
+              <div
+                  style="padding: 4px 8px; cursor: pointer;min-width: 100px"
+                  @mousedown="e => e.preventDefault()"
+                  @click="addList"
+              >
+                <plus-outlined />
+                创建清单
+              </div>
+              <div
+                  style="padding: 4px 8px; cursor: pointer"
+                  @mousedown="e => e.preventDefault()"
+                  @click="activeTask.listNanoid=[]"
+              >
+                <export-outlined />
+                移出清单
+              </div>
+            </template>
+          </a-select>
+        </a-col>
+        <a-col>
+          <a-input size="small" :bordered="false" v-model:value="activeTask.title"></a-input>
+        </a-col>
+      </a-row>
+
+
       <div style="position: relative;padding: 10px">
         <template v-if="activeTask.descriptionType==='text'">
           <a-textarea style="background: white;height: calc( 100vh - 100px) ;" @focus="this.showFormatConvert=true" @blur="this.showFormatConvert=false"
@@ -69,17 +105,26 @@
 <script>
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
-import {mapActions, mapState, mapWritableState} from "pinia";
+import {mapActions, mapWritableState} from "pinia";
 import {taskStore} from "../stores/task";
-import {configStore} from "../store";
-import {DataSourceTypes, MenuState} from '../consts'
+import {configStore, listStore} from "../store";
+import {MenuState} from '../consts'
 import {
-  AlertOutlined, CalendarOutlined, UserOutlined, TeamOutlined, MenuFoldOutlined,
-  MenuUnfoldOutlined, ToTopOutlined, MoreOutlined, PicLeftOutlined, AlignLeftOutlined
+  AlertOutlined,
+  AlignLeftOutlined,
+  CalendarOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  MoreOutlined,
+  PicLeftOutlined,
+  PlusOutlined,
+  TeamOutlined,
+  ToTopOutlined,
+  UserOutlined,ExportOutlined
 } from '@ant-design/icons-vue'
 import dayjs from "dayjs";
 import TimerSelector from "./TimerSelector.vue";
-import { shallowRef} from "vue";
+import {shallowRef} from "vue";
 
 export default {
   name: "TaskDetail",
@@ -101,6 +146,7 @@ export default {
   },
 
   mounted() {
+
     // 编辑器实例，必须用 shallowRef
     this.editorRef = shallowRef()
     if(!this.activeTask.descriptionType){
@@ -110,10 +156,13 @@ export default {
 
   },
   components: {
+    VNodes: (_, { attrs }) => {
+      return attrs.vnodes;
+    },
     TimerSelector,
     AlertOutlined, CalendarOutlined, UserOutlined, TeamOutlined, MenuFoldOutlined,
     MenuUnfoldOutlined, ToTopOutlined, MoreOutlined, PicLeftOutlined, AlignLeftOutlined,
-    Editor, Toolbar
+    Editor, Toolbar,PlusOutlined,ExportOutlined
   },
   beforeUnmount() {
     const editor = this.editorRef.value
@@ -121,8 +170,14 @@ export default {
     editor.destroy()
   },
   computed: {
+    list(){
+      return this.lists.find(list => {
+        return list.nanoid === this.activeTask.listNanoid
+      })
+    },
     ...mapWritableState(taskStore, ['activeTask', 'currentTasks', 'tasks']),
     ...mapWritableState(configStore, ['config']),
+    ...mapWritableState(listStore,['activeList','lists']),
     time() {
       if (this.activeTask.deadTime) {
         if (dayjs.unix(this.activeTask.deadTime).year() === dayjs().year()) {
@@ -137,6 +192,9 @@ export default {
     }
   },
   methods: {
+    addList(){
+      this.$emit('addList')
+    },
     handleCreated(editor){
       this.editorRef=editor
     },

@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {ITaskInfo, ITaskInfo as TaskInfo} from "../interfaces";
 import {nanoid} from "nanoid";
-import {configStore} from "./config";
+import {configStore,listStore} from "../store";
 // @ts-ignore
 import _ from 'lodash-es'
 import {sortType} from "../consts";
@@ -21,8 +21,15 @@ export const taskStore = defineStore('task', {
             if (!configStore().config.showComplete) {
                 displayArray = displayArray.filter(item => !item.completed)
             }
+            if(listStore().activeList.nanoid){
+                displayArray = displayArray.filter(item =>{
+                    if(item.listNanoid){
+                        return item.listNanoid.indexOf(listStore().activeList.nanoid)>-1
+                    }else{
+                        return false
+                    }})//todo
+            }
             if (configStore().config.sort.value === sortType.TIME.value) {
-                console.log('gg')
                 displayArray = displayArray.sort((a, b) =>
                 {
                     return (a.deadTime||-10) - (b.deadTime||-10)
@@ -33,7 +40,7 @@ export const taskStore = defineStore('task', {
                 })
             }else if(configStore().config.sort.value === sortType.LIST.value){
                 displayArray = displayArray.sort((a,b)=>{
-                    return ((a.listNanoId||0)>(b.listNanoId||0)?1:-1)
+                    return ((a.listNanoid||0)>(b.listNanoid||0)?1:-1)
                 })
             }
             console.log(displayArray)

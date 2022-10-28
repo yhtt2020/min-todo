@@ -8,7 +8,7 @@ export interface ITaskInfo {
     isTop: boolean,
     completed:boolean,
     nanoid:string,
-    listNanoId:string,
+    listNanoid:Array<string>,
 }
 export interface IListInfo {
     title: string,
