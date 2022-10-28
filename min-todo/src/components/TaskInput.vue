@@ -10,7 +10,7 @@
 <script>
 import dayjs from "dayjs";
 import {mapActions, mapState} from "pinia";
-import {taskStore} from "../store";
+import {taskStore} from "../stores/task";
 import {CalendarOutlined} from '@ant-design/icons-vue'
 import objectSupport from "dayjs/plugin/objectSupport";
 import TimerSelector from "./TimerSelector.vue";

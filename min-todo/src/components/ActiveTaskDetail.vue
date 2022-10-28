@@ -2,8 +2,9 @@
   <a-empty style="margin-top: calc( 100vh / 2 - 90px )" v-if="!activeTask.createTime" description="点击代办查看详情">
   </a-empty>
   <template v-else>
-    <div><span class="title-action"><span @click="toggleMenu"><menu-fold-outlined
+    <div><span class="title-action" style="cursor: pointer"><span @click="toggleMenu"><menu-fold-outlined
         v-if="config.menuState===MenuState.UN_FOLD"/><menu-unfold-outlined v-else/></span></span>
+      &nbsp;
       <a-checkbox v-model:checked="activeTask.completed"></a-checkbox>
 
       &nbsp;
@@ -69,7 +70,7 @@
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
 import {mapActions, mapState, mapWritableState} from "pinia";
-import {taskStore} from "../store";
+import {taskStore} from "../stores/task";
 import {configStore} from "../store";
 import {DataSourceTypes, MenuState} from '../consts'
 import {

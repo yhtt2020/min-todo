@@ -2,7 +2,7 @@
 import {TaskInfoInterface} from "../interfaces";
 import dayjs from "dayjs";
 import {mapActions, mapState} from "pinia";
-import {taskStore} from "../store";
+import {taskStore} from "../stores/task";
 import {ToTopOutlined} from '@ant-design/icons-vue'
 export default {
   name: 'TaskList',

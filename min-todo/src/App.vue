@@ -2,11 +2,12 @@
 
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import './assets/index.css'
 import {AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,
-  MenuUnfoldOutlined,ToTopOutlined,MoreOutlined,PlusOutlined} from '@ant-design/icons-vue'
+  MenuUnfoldOutlined,ToTopOutlined,MoreOutlined,PlusOutlined,
+  EllipsisOutlined} from '@ant-design/icons-vue'
 import {mapActions, mapState} from "pinia";
-import {taskStore, databaseStore, configStore,} from './store'
-import {listStore} from './stores/list'
+import { databaseStore, configStore,listStore,taskStore} from './store'
 import {MenuState} from './consts'
 import { Empty } from 'ant-design-vue';
 import {TaskInfoInterface as TaskInfo} from "./interfaces";
@@ -30,7 +31,8 @@ export default {
     TaskList,
     ListList,
     AlertOutlined,CalendarOutlined,UserOutlined,TeamOutlined,
-      MenuUnfoldOutlined,ToTopOutlined,MoreOutlined,PlusOutlined
+      MenuUnfoldOutlined,ToTopOutlined,MoreOutlined,PlusOutlined,
+    EllipsisOutlined
   },
   data(){
     return {
@@ -84,11 +86,11 @@ export default {
   <a-config-provider  :locale="zhCN" :getPopupContainer="getPopupContainer">
     <a-layout theme="light" style="height: 100vh">
 <!--      <a-layout-header theme="light">header</a-layout-header>-->
-        <a-layout-sider v-show="config.menuState===MenuState.UN_FOLD" :width="100" class="sidebar" theme="light">
+        <a-layout-sider v-show="config.menuState===MenuState.UN_FOLD"  class="sidebar left-sidebar" theme="light">
           <ul class="nav-items">
-            <li class="active"><div class="nav-wrapper"> <alert-outlined  style="font-size:16px"/> 今天</div></li>
+            <li class="active"><div class="nav-wrapper"><user-outlined style="font-size:16px"/> 个人 <span style="float:right;color: #999;">{{tasks.length}}</span></div></li>
+            <li><div class="nav-wrapper"> <alert-outlined  style="font-size:16px"/> 今天</div></li>
             <li><div class="nav-wrapper"><calendar-outlined style="font-size:16px"/> 最近7天</div></li>
-            <li><div class="nav-wrapper"><user-outlined style="font-size:16px"/> 个人</div></li>
             <li><div class="nav-wrapper"><team-outlined style="font-size:16px"/> 团队</div></li>
           </ul>
           <a-divider style="margin-top: -10px;margin-bottom: 5px" />
@@ -112,10 +114,14 @@ export default {
           </div>
         </a-layout-sider>
 
-        <div v-show="config.menuState===MenuState.UN_FOLD"   style="width:210px !important;background: white;padding-left: 10px;padding-top: 10px;padding-right: 10px">
+        <div class="main-content" v-show="config.menuState===MenuState.UN_FOLD"   style="">
           <div class="middle-title" >
             全部待办
-            <span style="float:right">{{tasks.length}}</span>
+            <a-dropdown :trigger="['click']"><span style="float:right;font-size: 18px;cursor: pointer"><ellipsis-outlined /></span><template #overlay>
+              <a-menu>
+                <a-menu-item key="1">显示已完成</a-menu-item>
+              </a-menu>
+            </template></a-dropdown>
           </div>
           <div style="margin-top: 5px;margin-bottom: 5px">
             <TaskInput></TaskInput>
