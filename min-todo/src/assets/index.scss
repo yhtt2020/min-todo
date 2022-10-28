@@ -8,5 +8,11 @@
   padding-right: 10px
 }
 
+.hover-action{
+  opacity: 0.8;
+  &:hover{
+    opacity: 1;
+  }
+}
 
 

@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
-import {DataSourceTypes, MenuState} from "../consts";
+import {DataSourceTypes, MenuState,sortType} from "../consts";
+import {ISort, IListInfo} from "../interfaces";
 
 export const configStore = defineStore('config', {
     state: () => {
@@ -8,6 +9,7 @@ export const configStore = defineStore('config', {
             config: {
                 menuState: MenuState.FOLD,
                 showComplete:false,
+                sort:<ISort>sortType.TIME
             },
         }
     },
@@ -25,6 +27,12 @@ export const configStore = defineStore('config', {
         hideCompleted(){
             this.config.showComplete=false
         },
+        setSort(list:IListInfo, sort:ISort){
+            console.log(list,sort)
+            if(!list){
+                this.config.sort=sort
+            }
+        }
 
     }
 })
