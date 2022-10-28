@@ -1,8 +1,8 @@
 import {defineStore} from "pinia";
-import {TaskInfoInterface as TaskInfo,ListInfoInterface as ListInfo} from './interfaces'
+import {ITaskInfo as TaskInfo,IListInfo as ListInfo} from './interfaces'
 import {nanoid} from 'nanoid'
 import _ from 'lodash-es'
-import {DataSourceTypes, MenuState} from './consts'
+import {DataSourceTypes, MenuState, sortType} from './consts'
 import {Menu} from "ant-design-vue";
 import {listStore} from './stores/list'
 import {taskStore} from './stores/task';
@@ -58,6 +58,9 @@ export const databaseStore = defineStore('database', {
         async loadConfigs() {
             await this.loadTablesObject('config')
             configStore().config = this.database.config
+            if(!this.database.config.sort){
+                configStore().config.sort=sortType.TIME
+            }
         },
         async loadLists() {
             if (typeof this.database.lists === 'undefined') {

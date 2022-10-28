@@ -1,5 +1,5 @@
 <script lang="ts">
-import {TaskInfoInterface} from "../interfaces";
+import {ITaskInfo} from "../interfaces";
 import dayjs from "dayjs";
 import {mapActions, mapState} from "pinia";
 import {taskStore} from "../stores/task";
@@ -8,7 +8,7 @@ import { configStore } from "../store";
 export default {
   name: 'TaskList',
   props: {
-    data: [] as TaskInfoInterface[]
+    data: [] as ITaskInfo[]
   },
   components:{
     ToTopOutlined

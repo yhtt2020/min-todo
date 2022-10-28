@@ -1,5 +1,5 @@
 <script lang="ts">
-import {ListInfoInterface} from "../interfaces";
+import {IListInfo} from "../interfaces";
 import dayjs from "dayjs";
 import {mapActions, mapState} from "pinia";
 import {listStore} from "../stores/list";
@@ -7,7 +7,7 @@ import {OrderedListOutlined} from '@ant-design/icons-vue'
 export default {
   name: 'ListList',
   props: {
-    data: [] as ListInfoInterface[]
+    data: [] as IListInfo[]
   },
   components:{
     OrderedListOutlined

@@ -1,4 +1,4 @@
-export interface TaskInfoInterface {
+export interface ITaskInfo {
     title: string,
     description: string,
     descriptionType:string,//text rich markdown
@@ -8,8 +8,9 @@ export interface TaskInfoInterface {
     isTop: boolean,
     completed:boolean,
     nanoid:string,
+    listNanoId:string,
 }
-export interface ListInfoInterface {
+export interface IListInfo {
     title: string,
     description: string,
     createTime: number,
@@ -17,4 +18,9 @@ export interface ListInfoInterface {
     isTop: boolean,
     completed:boolean,
     nanoid:string,
+}
+
+export interface ISort{
+    title:string,
+    value:number
 }

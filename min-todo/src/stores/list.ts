@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ListInfoInterface as ListInfo, TaskInfoInterface as TaskInfo} from "../interfaces";
+import {IListInfo as ListInfo, ITaskInfo as TaskInfo} from "../interfaces";
 import {nanoid} from "nanoid";
 // @ts-ignore
 import _ from "lodash-es";
