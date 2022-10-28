@@ -21,7 +21,7 @@ export const taskStore = defineStore('task', {
             if (!configStore().config.showComplete) {
                 displayArray = displayArray.filter(item => !item.completed)
             }
-            if(listStore().activeList===null){
+            if(listStore().activeList===null || typeof listStore().activeList==='undefined'){
                 //不做处理
             }else if(listStore().activeList.nanoid){
                 displayArray = displayArray.filter(item =>{
@@ -45,7 +45,6 @@ export const taskStore = defineStore('task', {
                     return ((a.listNanoid||0)>(b.listNanoid||0)?1:-1)
                 })
             }
-            console.log(displayArray)
             return displayArray
         }
     },

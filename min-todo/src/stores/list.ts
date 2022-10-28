@@ -43,6 +43,12 @@ export const  listStore=defineStore('list',{
             if (this.activeList.nanoid === nanoid) {
                 this.activeList={}
             }
+            taskStore().tasks.map(task=>{
+                let found=task.listNanoid.indexOf(nanoid)
+                if(found>-1){
+                    task.listNanoid.splice(found,-1)
+                }
+            })
             this.lists.splice(this.lists.findIndex(list => list.nanoid === nanoid), 1)
         },
         setActiveList(list:IListInfo){

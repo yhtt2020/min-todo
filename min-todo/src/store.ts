@@ -14,7 +14,7 @@ export const databaseStore = defineStore('database', {
             database: {
                 tasks: [] as TaskInfo[],
                 config: {},
-                lists:[] as ListInfo[]
+                lists: [] as ListInfo[],
             }
         }
     },
@@ -36,7 +36,8 @@ export const databaseStore = defineStore('database', {
                     this.database = {
                         tasks: [],
                         config: {},
-                        lists:[]
+                        lists:[],
+                        activeList:null
                     }
                 }
                 this.loadTasks()

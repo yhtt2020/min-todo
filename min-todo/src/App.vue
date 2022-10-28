@@ -94,7 +94,7 @@ export default {
       <!--      <a-layout-header theme="light">header</a-layout-header>-->
       <a-layout-sider v-show="config.menuState===MenuState.UN_FOLD" class="sidebar left-sidebar" theme="light">
         <ul class="nav-items">
-          <li class="active" @click="activeList=null">
+          <li :class="{'active':Object.keys(this.activeList).length===0}" @click="activeList={}">
             <div class="nav-wrapper">
               <user-outlined style="font-size:16px"/>
               个人 <span style="float:right;color: #999;">{{ tasks.length }}</span></div>
@@ -141,7 +141,7 @@ export default {
 
       <div class="main-content" v-show="config.menuState===MenuState.UN_FOLD" style="">
         <div class="middle-title">
-          <span v-if="!activeList">
+          <span v-if="Object.keys(this.activeList).length===0">
             全部待办
           </span>
           <span v-else>

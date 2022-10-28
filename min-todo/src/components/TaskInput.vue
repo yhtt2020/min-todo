@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     getPlaceholder(){
-      if(this.activeList){
+      if(Object.keys(this.activeList).length>0){
         return '添加到「'+this.activeList.title+"」"
       }else{
         return '输入待办，回车确认'
@@ -56,12 +56,17 @@ export default {
 
     addNewTask() {
       let task = this.newTask
-      this.newTask.listNanoid=[this.activeList.nanoid]||0
+      if(Object.keys(this.activeList).length>0){
+        this.newTask.listNanoid=this.activeList.nanoid?[this.activeList.nanoid]:[]
+      }else{
+        this.newTask.listNanoid=[]
+      }
+
       task = Object.assign(this.newTask,{} )
       this.addTask(task)
       this.newTask.title = ''
       this.newTask.deadTime=null
-
+      this.newTask.listNanoid=[]
     }
   }
 }
