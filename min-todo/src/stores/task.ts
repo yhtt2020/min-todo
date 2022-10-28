@@ -21,7 +21,9 @@ export const taskStore = defineStore('task', {
             if (!configStore().config.showComplete) {
                 displayArray = displayArray.filter(item => !item.completed)
             }
-            if(listStore().activeList.nanoid){
+            if(listStore().activeList===null){
+                //不做处理
+            }else if(listStore().activeList.nanoid){
                 displayArray = displayArray.filter(item =>{
                     if(item.listNanoid){
                         return item.listNanoid.indexOf(listStore().activeList.nanoid)>-1

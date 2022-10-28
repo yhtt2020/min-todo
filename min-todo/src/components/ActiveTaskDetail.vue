@@ -1,7 +1,7 @@
 <template>
   <a-empty style="margin-top: calc( 100vh / 2 - 90px )" v-if="!activeTask.createTime" description="点击代办查看详情">
   </a-empty>
-  <template v-else>
+  <div style="position:relative;" v-else>
     <div><span class="title-action" style="cursor: pointer"><span @click="toggleMenu"><menu-fold-outlined
         v-if="config.menuState===MenuState.UN_FOLD"/><menu-unfold-outlined v-else/></span></span>
       &nbsp;
@@ -23,36 +23,10 @@
     </div>
     <a-divider style="margin-top: 10px;margin-bottom: 10px"></a-divider>
 
-    <div>
+    <div >
       <a-row type="flex">
         <a-col>
-          <a-select  mode="multiple" placeholder="清单" v-if="activeTask.listNanoid.length>0" size="small"
-                    :fieldNames="{label:'title',value:'nanoid'}"
-                    v-model:value="activeTask.listNanoid"
-                    style="min-width: 100px;max-width: 120px"
-                    :options="this.lists"
-          >
-            <template #dropdownRender="{ menuNode: menu }">
-              <v-nodes :vnodes="menu" />
-              <a-divider style="margin: 4px 0" />
-              <div
-                  style="padding: 4px 8px; cursor: pointer;min-width: 100px"
-                  @mousedown="e => e.preventDefault()"
-                  @click="addList"
-              >
-                <plus-outlined />
-                创建清单
-              </div>
-              <div
-                  style="padding: 4px 8px; cursor: pointer"
-                  @mousedown="e => e.preventDefault()"
-                  @click="activeTask.listNanoid=[]"
-              >
-                <export-outlined />
-                移出清单
-              </div>
-            </template>
-          </a-select>
+
         </a-col>
         <a-col>
           <a-input size="small" :bordered="false" v-model:value="activeTask.title"></a-input>
@@ -62,7 +36,7 @@
 
       <div style="position: relative;padding: 10px">
         <template v-if="activeTask.descriptionType==='text'">
-          <a-textarea style="background: white;height: calc( 100vh - 100px) ;" @focus="this.showFormatConvert=true" @blur="this.showFormatConvert=false"
+          <a-textarea style="background: white;height: calc( 100vh - 129px) ;" @focus="this.showFormatConvert=true" @blur="this.showFormatConvert=false"
                       v-model:value="activeTask.description" placeholder="描述" :bordered="false" :autosize="false">
           </a-textarea>
         </template>
@@ -74,7 +48,7 @@
               :mode="mode"
           />
           <Editor @onCreated="handleCreated"
-              style="height: calc( 100vh - 141px) ; "
+              style="height: calc( 100vh - 170px) ; "
               v-model="activeTask.description"
               :defaultConfig="editorConfig"
               :mode="mode"
@@ -96,10 +70,44 @@
             </a-radio-button>
 <!--            <a-radio-button style="background: none" title="Markdown编辑器" value="markdown"><span class="icon-markdown">MD</span></a-radio-button>-->
           </a-radio-group>
+
         </div>
+
       </div>
+
     </div>
-  </template>
+  </div>
+  <div style="position: absolute;bottom: 10px;left: 10px">
+    所属清单： <a-select  mode="multiple" placeholder="选择清单" size="small"
+                     :fieldNames="{label:'title',value:'nanoid'}"
+                     v-model:value="activeTask.listNanoid"
+                     :maxTagTextLength="5"
+                     :allowClear="true"
+                     style="min-width: 100px;max-width:calc(100% - 85px);white-space: nowrap"
+                     :options="this.lists"
+  >
+    <template #dropdownRender="{ menuNode: menu }">
+      <v-nodes :vnodes="menu" />
+      <a-divider style="margin: 4px 0" />
+      <div
+          style="padding: 4px 8px; cursor: pointer;min-width: 100px"
+          @mousedown="e => e.preventDefault()"
+          @click="addList"
+      >
+        <plus-outlined />
+        创建清单
+      </div>
+      <div
+          style="padding: 4px 8px; cursor: pointer"
+          @mousedown="e => e.preventDefault()"
+          @click="activeTask.listNanoid=[]"
+      >
+        <export-outlined />
+        移出清单
+      </div>
+    </template>
+  </a-select>
+  </div>
 </template>
 
 <script>

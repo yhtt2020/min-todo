@@ -9,7 +9,7 @@ import {
   MenuUnfoldOutlined, ToTopOutlined, MoreOutlined, PlusOutlined,
   EllipsisOutlined, ClockCircleOutlined, SortAscendingOutlined, OrderedListOutlined, SwapLeftOutlined
 } from '@ant-design/icons-vue'
-import {mapActions, mapGetters, mapState} from "pinia";
+import {mapActions, mapGetters, mapState, mapWritableState} from "pinia";
 import {databaseStore, configStore, listStore, taskStore} from './store'
 import {MenuState} from './consts'
 import {Empty} from 'ant-design-vue';
@@ -26,7 +26,8 @@ export default {
   computed: {
     ...mapState(taskStore, ['activeTask', 'currentTasks', 'tasks', 'displayList']),
     ...mapState(configStore, ['config']),
-    ...mapState(listStore, ['lists','activeList','displayLists']),
+    ...mapWritableState(listStore, ['activeList']),
+    ...mapState(listStore, ['lists','displayLists'])
   },
   components: {
     VueCustomScrollbars,
@@ -93,7 +94,7 @@ export default {
       <!--      <a-layout-header theme="light">header</a-layout-header>-->
       <a-layout-sider v-show="config.menuState===MenuState.UN_FOLD" class="sidebar left-sidebar" theme="light">
         <ul class="nav-items">
-          <li class="active">
+          <li class="active" @click="activeList=null">
             <div class="nav-wrapper">
               <user-outlined style="font-size:16px"/>
               个人 <span style="float:right;color: #999;">{{ tasks.length }}</span></div>
@@ -189,7 +190,7 @@ export default {
         </VueCustomScrollbars>
       </div>
       <div theme="light"
-           style="min-width: auto !important;flex: auto !important;max-width: 999999px !important;width: auto !important; padding-top: 10px;padding-left: 10px;padding-right: 10px;border-left: 1px solid #e1e1e1">
+           style="position:relative;min-width: auto !important;flex: auto !important;max-width: 999999px !important;width: auto !important; padding-top: 10px;padding-left: 10px;padding-right: 10px;border-left: 1px solid #e1e1e1">
         <ActiveTaskDetail @addList="showAddList"></ActiveTaskDetail>
       </div>
       <div>
