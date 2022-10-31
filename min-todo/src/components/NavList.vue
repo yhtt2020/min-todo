@@ -1,17 +1,17 @@
 <template>
   <ul class="nav-items">
-    <li @click="()=>{this.setTab('personal');}" :class="{'active':this.isActive('personal')}" >
+    <li @click="setTab('personal');" :class="{'active':this.isActive('personal')}" >
       <div class="nav-wrapper">
         <user-outlined style="font-size:16px"/>
         个人 <span style="float:right;color: #999;">{{ this.tasks.filter(task=>!task.completed).length }}</span></div>
     </li>
-    <li @click="()=>{this.setTab('today');}" :class="{'active':this.isActive('today')}" >
+    <li @click="this.setTab('today')" :class="{'active':this.isActive('today')}" >
       <div class="nav-wrapper">
         <alert-outlined style="font-size:16px"/>
         今天
       </div>
     </li>
-    <li @click="()=>{this.setTab('week');}" :class="{'active':this.isActive('week')}">
+    <li @click="this.setTab('week')" :class="{'active':this.isActive('week')}">
       <div class="nav-wrapper">
         <calendar-outlined style="font-size:16px"/>
         7天
@@ -26,7 +26,7 @@
   </ul>
 </template>
 
-<script>
+<script lang="ts">
 import {mapState, mapWritableState} from "pinia";
 import {listStore} from "../stores/list";
 import {taskStore} from "../stores/task";

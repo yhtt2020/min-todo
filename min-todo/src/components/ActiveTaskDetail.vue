@@ -1,9 +1,16 @@
 <template>
-  <a-empty style="margin-top: calc( 100vh / 2 - 90px )" v-if="!activeTask.createTime" description="点击代办查看详情">
-  </a-empty>
+  <div v-if="!activeTask.createTime" style="padding: 10px">
+    <span class="title-action hover-action" @click="toggleMenu" style="cursor: pointer">
+      <span ><menu-fold-outlined
+        v-if="config.menuState===MenuState.UN_FOLD"/><menu-unfold-outlined v-else/></span>
+      <span v-if="config.menuState===MenuState.UN_FOLD">&nbsp;折叠</span><span v-else>&nbsp;展开</span>
+    </span>
+    <a-empty style="margin-top: calc( 100vh / 2 - 90px )"  description="点击代办查看详情">
+    </a-empty>
+
+  </div>
   <div v-else style="height: calc(100vh - 20px);margin:10px;display: flex;flex-direction: column;word-break: break-all;white-space:break-spaces">
     <div style="position:relative;flex: 1"  >
-
       <div><span class="title-action" style="cursor: pointer"><span @click="toggleMenu"><menu-fold-outlined
           v-if="config.menuState===MenuState.UN_FOLD"/><menu-unfold-outlined v-else/></span></span>
         &nbsp;
@@ -127,7 +134,7 @@
 
 </template>
 
-<script>
+<script lang="ts">
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
 import {mapActions, mapWritableState} from "pinia";

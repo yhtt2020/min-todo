@@ -1,5 +1,5 @@
 <template>
-  <calendar-outlined @click="this.dateTimePickerVisible=true" :style="{color:this.modelValue?'#1890ff':'rgba(0, 0, 0, 0.45)'}"/>
+  <calendar-outlined @click="selectTime" :style="{color:this.modelValue?'#1890ff':'rgba(0, 0, 0, 0.45)'}"/>
   <a-modal
       @ok="seTime"
       @cancel="clearDeadTime"
@@ -33,7 +33,7 @@
   </a-modal>
 </template>
 
-<script>
+<script lang="ts">
 import dayjs from "dayjs";
 import objectSupport from "dayjs/plugin/objectSupport";
 import {CalendarOutlined} from "@ant-design/icons-vue";
@@ -66,6 +66,9 @@ export default {
     }
   },
   methods:{
+    selectTime(){
+      this.dateTimePickerVisible=true
+    },
     setTimeDayEnd(force=false){
 
       if(force || this.newTime===null){
@@ -102,7 +105,7 @@ export default {
         if (this.newTime === null) {
           this.setTimeDayEnd()
         }
-        newTime = new dayjs({
+        newTime =  dayjs({
           year: this.newDate.year(),
           month: this.newDate.month(),
           day: this.newDate.date(),

@@ -6,7 +6,7 @@
   </a-input>
 </template>
 
-<script>
+<script lang="ts">
 import dayjs from "dayjs";
 import {mapActions, mapState} from "pinia";
 import {taskStore} from "../stores/task";
