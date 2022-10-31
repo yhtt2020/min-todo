@@ -111,7 +111,7 @@ export default {
         </div>
         <div>
           <a-empty v-if="displayLists.length===0" :image="simpleImage"/>
-          <VueCustomScrollbars :settings="settings" style="position:relative;height: calc(100vh - 167px)">
+          <VueCustomScrollbars :settings="settings" style="position:relative;height: calc(100vh - 137px)">
             <ListList :data="displayLists"></ListList>
           </VueCustomScrollbars>
         </div>
@@ -168,7 +168,7 @@ export default {
         </VueCustomScrollbars>
       </div>
       <div theme="light"
-           style="position:relative;min-width: auto !important;flex: auto !important;max-width: 999999px !important;width: auto !important; padding-top: 10px;padding-left: 10px;padding-right: 10px;border-left: 1px solid #e1e1e1">
+           style="position:relative;flex: auto !important;width:0; border-left: 1px solid #e1e1e1">
         <ActiveTaskDetail @addList="showAddList"></ActiveTaskDetail>
       </div>
       <div>

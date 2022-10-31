@@ -17,12 +17,12 @@
         7天
       </div>
     </li>
-    <li @click="()=>{this.setTab('group');}" :class="{'active':this.isActive('group')}">
-      <div class="nav-wrapper">
-        <team-outlined style="font-size:16px"/>
-        团队
-      </div>
-    </li>
+<!--    <li @click="()=>{this.setTab('group');}" :class="{'active':this.isActive('group')}">-->
+<!--      <div class="nav-wrapper">-->
+<!--        <team-outlined style="font-size:16px"/>-->
+<!--        团队-->
+<!--      </div>-->
+<!--    </li>-->
   </ul>
 </template>
 
