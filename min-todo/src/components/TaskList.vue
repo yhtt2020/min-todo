@@ -1,84 +1,111 @@
 <script lang="ts">
-import {ITaskInfo} from "../interfaces";
+import { ITaskInfo } from "../interfaces";
 import dayjs from "dayjs";
-import {mapActions, mapState} from "pinia";
-import {taskStore} from "../stores/task";
-import {ToTopOutlined} from '@ant-design/icons-vue'
+import { mapActions, mapState } from "pinia";
+import { taskStore } from "../stores/task";
+import { ToTopOutlined } from "@ant-design/icons-vue";
 import { configStore } from "../store";
 export default {
-  name: 'TaskList',
+  name: "TaskList",
   props: {
-    data: [] as ITaskInfo[]
+    data: [] as ITaskInfo[],
   },
-  components:{
-    ToTopOutlined
+  components: {
+    ToTopOutlined,
   },
-  data(){
+  data() {
     return {
-      ellipsis:{
-        rows:1,
-      }
-    }
-
+      ellipsis: {
+        rows: 1,
+      },
+    };
   },
-  computed:{
-    ...mapState(taskStore,['activeTask'])
+  computed: {
+    ...mapState(taskStore, ["activeTask"]),
   },
   methods: {
-    ...mapActions(taskStore, ['setActiveTask','removeTask']),
+    ...mapActions(taskStore, ["setActiveTask", "removeTask"]),
     getDistance(deadTime) {
-      let now = dayjs().unix()
-      let distance = deadTime - now
-      let displayText = ''
+      let now = dayjs().unix();
+      let distance = deadTime - now;
+      let displayText = "";
 
       function distanceToText(distance: number) {
-        let displayText = ''
+        let displayText = "";
         if (distance > 31536000) {
-          displayText = String(Math.floor(distance / 31536000)) + '年'
+          displayText = String(Math.floor(distance / 31536000)) + "年";
         } else if (distance > 86400) {
-          displayText = String(Math.floor(distance / 86400)) + '天'
+          displayText = String(Math.floor(distance / 86400)) + "天";
         } else if (distance > 3600) {
-          displayText = String(Math.floor(distance / 3600) + '小时')
+          displayText = String(Math.floor(distance / 3600) + "小时");
         } else if (distance > 60) {
-          displayText = String(Math.floor(distance / 60) + '分钟')
+          displayText = String(Math.floor(distance / 60) + "分钟");
         }
-        return displayText
+        return displayText;
       }
 
       if (distance > 0) {
-        displayText = distanceToText(distance)
+        displayText = distanceToText(distance);
       } else {
-        displayText = '已过期' + distanceToText(-distance)
+        displayText = "已过期" + distanceToText(-distance);
       }
-      return displayText
-    }
-  }
-
-}
+      return displayText;
+    },
+  },
+};
 </script>
 
 <template>
-  <div v-if="data.length===0" style="margin-left: -20px;margin-top: calc( (  100vh - 69px ) / 2 - 50px)">
+  <div
+    v-if="data.length === 0"
+    style="margin-left: -20px; margin-top: calc((100vh - 69px) / 2 - 50px)"
+  >
     <a-empty description=""></a-empty>
   </div>
   <ul class="task-list">
     <a-dropdown :trigger="['contextmenu']" v-for="task in data">
-    <li :class="{'active':task===activeTask}" @click="setActiveTask(task)" >
-      <div style="display: flex">
-        <div style="min-width: 25px">
-          <a-checkbox v-model:checked="task.completed"></a-checkbox>
-        </div>
-        <div  style="flex: auto;text-wrap: normal;word-break: break-all;width: 0" >
-          <div :class="{'completed':task.completed}" style="word-break: break-all;text-overflow:ellipsis;overflow:hidden;white-space: nowrap;">
-             <span  style="margin-bottom: 0;line-height: 28px;"
-             ><to-top-outlined v-if="task.isTop"/> {{task.title}}</span>
+      <li :class="{ active: task === activeTask }" @click="setActiveTask(task)">
+        <div style="display: flex">
+          <div style="min-width: 25px">
+            <a-checkbox v-model:checked="task.completed"></a-checkbox>
+          </div>
+          <div
+            style="
+              flex: auto;
+              text-wrap: normal;
+              word-break: break-all;
+              width: 0;
+            "
+          >
+            <div
+              :class="{ completed: task.completed }"
+              style="
+                word-break: break-all;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+              "
+            >
+              <span style="margin-bottom: 0; line-height: 28px"
+                ><to-top-outlined v-if="task.isTop" /> {{ task.title }}</span
+              >
+            </div>
+          </div>
+          <div>
+            <span
+              style="
+                margin-left: 5px;
+                white-space: nowrap;
+                word-break-wrap: none;
+                display: inline-block;
+              "
+              class="dead-time"
+              v-if="task.deadTime"
+              >{{ getDistance(task.deadTime) }}</span
+            >
           </div>
         </div>
-        <div>
-          <span style="margin-left: 5px;white-space: nowrap;word-break-wrap: none;display: inline-block" class="dead-time"  v-if="task.deadTime">{{ getDistance(task.deadTime) }}</span>
-        </div>
-      </div>
-    </li>
+      </li>
       <template #overlay>
         <a-menu>
           <a-menu-item @click="removeTask(task.nanoid)">删除</a-menu-item>
@@ -88,13 +115,12 @@ export default {
   </ul>
 </template>
 <style>
-.ant-typography del{
+.ant-typography del {
   color: #ccc;
 }
 </style>
 <style scoped lang="scss">
 .dead-time {
-  color: #999;
   float: right;
   font-size: 12px;
 }
@@ -104,25 +130,18 @@ export default {
   padding-left: 0;
 
   li {
-    &:hover, &.active {
-      background:#1890ff;
+    &:hover,
+    &.active {
       border-radius: 4px;
-      color: white;
-      .dead-time{
-        color: #f3f3f3;
-      }
     }
 
-    border-bottom: 1px solid #f1f1f1;
     line-height: 28px;
-    padding-left: 3px;
-    padding-right: 3px;
 
+    padding: 3px 10px;
     .completed {
       text-decoration: line-through;
       color: #ccc;
     }
   }
 }
-
 </style>
